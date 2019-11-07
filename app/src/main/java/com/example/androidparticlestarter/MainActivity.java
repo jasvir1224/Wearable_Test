@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                count = count + 1;
+                count = count - 1;
 
             }
         });
