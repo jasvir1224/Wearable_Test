@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ import io.particle.android.sdk.utils.Async;
 
 public class MainActivity extends AppCompatActivity {
     // MARK: Debug info
-    private final String TAG="Marking-itus";
+    private final String TAG = "Marking-itus";
 
     // MARK: Particle Account Info
     private final String PARTICLE_USERNAME = "jasvir.kaur1224@gmail.com";
@@ -36,11 +37,12 @@ public class MainActivity extends AppCompatActivity {
 
     // MARK: Particle device
     private ParticleDevice mDevice;
-
+    SeekBar seek;
     Button btn;
     TextView time;
     int count;
-   // int seconds = 20;
+    // int seconds = 20;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +51,54 @@ public class MainActivity extends AppCompatActivity {
 
         btn = findViewById(R.id.btn);
         time = findViewById(R.id.time);
-
+        seek = findViewById(R.id.seekBar);
         // 1. Initialize your connection to the Particle API
         ParticleCloudSDK.init(this.getApplicationContext());
 
         // 2. Setup your device variable
         getDeviceFromCloud();
 
+
+        seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                count = progress;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                count = count + 1;
+
+            }
+        });
+
+
+    }
+
+    public void click(View view) {
+//        this.count = this.count + 1;
+//        if((this.count % 5 == 0) && (this.seconds >= 0)){
+//            this.seconds = this.seconds - 1;
+//            System.out.println(seconds);
+//            time.setText(seconds);
+//        }
+        new CountDownTimer(20000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                time.setText(String.valueOf(count));
+                count++;
+            }
+
+            @Override
+            public void onFinish() {
+                time.setText("20");
+            }
+        }.start();
     }
 
 
@@ -86,24 +129,5 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void click(View view) {
-//        this.count = this.count + 1;
-//        if((this.count % 5 == 0) && (this.seconds >= 0)){
-//            this.seconds = this.seconds - 1;
-//            System.out.println(seconds);
-//            time.setText(seconds);
-//        }
-        new CountDownTimer(20000,1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                time.setText(String.valueOf(count));
-                count++;
-            }
-            @Override
-            public void onFinish() {
-                time.setText("0");
-            }
-        }.start();
-    }
-    }
 
+}
