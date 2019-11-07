@@ -1,10 +1,14 @@
 package com.example.androidparticlestarter;
 
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import java.io.IOException;
 
@@ -33,10 +37,18 @@ public class MainActivity extends AppCompatActivity {
     // MARK: Particle device
     private ParticleDevice mDevice;
 
+    Button btn;
+    TextView time;
+    int count;
+   // int seconds = 20;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        btn = findViewById(R.id.btn);
+        time = findViewById(R.id.time);
 
         // 1. Initialize your connection to the Particle API
         ParticleCloudSDK.init(this.getApplicationContext());
@@ -74,4 +86,24 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-}
+    public void click(View view) {
+//        this.count = this.count + 1;
+//        if((this.count % 5 == 0) && (this.seconds >= 0)){
+//            this.seconds = this.seconds - 1;
+//            System.out.println(seconds);
+//            time.setText(seconds);
+//        }
+        new CountDownTimer(20000,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                time.setText(String.valueOf(count));
+                count++;
+            }
+            @Override
+            public void onFinish() {
+                time.setText("0");
+            }
+        }.start();
+    }
+    }
+
